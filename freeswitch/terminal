@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+
+if docker ps --format '{{.Names}}' | grep -q "^freeswitch$"; then
+  docker exec -ti freeswitch /bin/bash
+else
+  echo "FreeSWITCH is not available"
+  exit 1
+fi

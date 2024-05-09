@@ -1,0 +1,79 @@
+--- configure.ac
++++ configure.ac.new
+@@ -21,6 +21,15 @@
+ AC_CONFIG_HEADER([libs/xmlrpc-c/xmlrpc_amconfig.h])
+ 
+ AC_CANONICAL_HOST
++
++# DH: for AVX2 and SSE2 SIMD extensions
++m4_include([ax_check_compile_flag.m4])
++AX_CHECK_COMPILE_FLAG([-mavx2], [have_avx2=yes], [have_avx2=no])
++AX_CHECK_COMPILE_FLAG([-msse2], [have_sse2=yes], [have_sse2=no])
++AM_CONDITIONAL([USE_AVX2], [test "x$have_avx2" = "xyes"])
++AM_CONDITIONAL([USE_SSE2], [test "x$have_sse2" = "xyes"])
++AC_SUBST([HAVE_AVX2], [$have_avx2])
++AC_SUBST([HAVE_SSE2], [$have_sse2])
+ 
+ # Absolute source/build directory
+ switch_srcdir=`(cd $srcdir && pwd)`
+@@ -1612,6 +1621,34 @@
+ AC_SUBST(SYSTEMD_LIBS)
+ 
+ 
++dnl DH: Added for including libwebsockets
++AC_ARG_WITH(lws,
++  [AS_HELP_STRING([--with-lws],
++     [enable support for libwebsockets])],
++  [with_lws="$withval"],
++  [with_lws="no"])
++if test "$with_lws" = "yes"; then
++  PKG_CHECK_MODULES([LWS], [libwebsockets], [
++    AM_CONDITIONAL([HAVE_LWS],[true])], [
++    AC_MSG_RESULT([no]); AM_CONDITIONAL([HAVE_LWS],[false])])
++else
++    AM_CONDITIONAL([HAVE_LWS],[false])
++fi
++
++dnl DH: Added for including google protobuf libs and aws sdk
++AC_ARG_WITH(extra,
++   [AS_HELP_STRING([--with-extra],
++     [enable support for extra modules which require google rpc (libgrpc++ and libgrpc)])],
++   [with_extra="$withval"],
++   [with_extra="no"])
++if test "$with_extra" = "yes"; then
++  PKG_CHECK_MODULES([GRPC], [grpc++ grpc], [
++     AM_CONDITIONAL([HAVE_GRPC],[true])], [
++     AC_MSG_RESULT([no]); AM_CONDITIONAL([HAVE_GRPC],[false])])
++else
++     AM_CONDITIONAL([HAVE_GRPC],[false])
++fi
++
+ dnl ---------------------------------------------------------------------------
+ dnl - OpenLDAP SDK
+ dnl ---------------------------------------------------------------------------
+@@ -2092,6 +2129,25 @@
+ 		tests/unit/Makefile
+ 		src/Makefile
+ 		src/mod/Makefile
++		src/mod/applications/mod_assemblyai_transcribe/Makefile
++		src/mod/applications/mod_audio_fork/Makefile
++		src/mod/applications/mod_azure_transcribe/Makefile
++		src/mod/applications/mod_azure_tts/Makefile
++		src/mod/applications/mod_cobalt_transcribe/Makefile
++		src/mod/applications/mod_google_transcribe/Makefile
++		src/mod/applications/mod_deepgram_transcribe/Makefile
++		src/mod/applications/mod_deepgram_tts/Makefile
++		src/mod/applications/mod_dub/Makefile
++		src/mod/applications/mod_elevenlabs_tts/Makefile
++		src/mod/applications/mod_whisper_tts/Makefile
++		src/mod/applications/mod_ibm_transcribe/Makefile
++		src/mod/applications/mod_jambonz_transcribe/Makefile
++		src/mod/applications/mod_nuance_transcribe/Makefile
++		src/mod/applications/mod_nvidia_transcribe/Makefile
++		src/mod/applications/mod_playht_tts/Makefile
++		src/mod/applications/mod_rimelabs_tts/Makefile
++		src/mod/applications/mod_soniox_transcribe/Makefile
++		src/mod/applications/mod_dialogflow/Makefile
+ 		src/mod/applications/mod_abstraction/Makefile
+ 		src/mod/applications/mod_avmd/Makefile
+ 		src/mod/applications/mod_bert/Makefile

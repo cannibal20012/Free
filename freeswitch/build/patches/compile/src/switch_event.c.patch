@@ -1,0 +1,87 @@
+--- switch_event.c
++++ switch_event.c.new
+@@ -1815,14 +1815,84 @@
+ 	return SWITCH_STATUS_SUCCESS;
+ }
+ 
++/* DH: it's critical this is kep in sorted ASCII order */
++static const char* limitedEvents[] = {
++	"CHANNEL_EXECUTE",
++	"CHANNEL_EXECUTE_COMPLETE",
++	"PLAYBACK_START",
++	"PLAYBACK_STOP"
++};
++static int limitedEventsCount = sizeof(limitedEvents) / sizeof(char *);
++
++/* DH: it's critical this is kep in sorted ASCII order (note uppercase sorts before lowercase)*/
++static const char* limitedHeaders[] = {
++	"Action",
++	"Channel-Call-UUID",
++	"Conference-Name",
++	"Conference-Size",
++	"Conference-Unique-ID",
++	"Core-UUID",
++	"DTMF-Digit",
++	"DTMF-Duration",
++	"DTMF-SSRC",
++	"DTMF-Source",
++	"DTMF-Timestamp",
++	"Detected-Fax-Tone",
++	"Detected-Tone",
++	"Error",
++	"Event-Name",
++	"Event-Subclass",
++	"Event-UUID",
++	"Member-Ghost",
++	"Member-ID",
++	"Member-Type",
++	"Path",
++	"Playback-File-Path",
++	"Playback-File-Type",
++	"Unique-ID",
++	"media-bugname",
++	"milliseconds",
++	"samples",
++	"seconds",
++	"variable_current_application",
++	"variable_dtmf_type",
++	"variable_myDigitBuffer",
++	"variable_myDigitBuffer_invalid",
++	"variable_playback_last_offset_pos",
++	"variable_playback_ms",
++	"variable_playback_samples",
++	"variable_playback_seconds",
++	"variable_playback_terminators"
++};
++static int limitedHeadersCount = sizeof(limitedHeaders) / sizeof(char *);
++static int compare_strings(const void *a, const void *b) {
++	return strcmp(*(const char **)a, *(const char **)b);
++}
++
+ SWITCH_DECLARE(switch_status_t) switch_event_serialize_json_obj(switch_event_t *event, cJSON **json)
+ {
+ 	switch_event_header_t *hp;
+ 	cJSON *cj;
++	int limitHeaders = 0;
++	const char* eventName = event->headers ? event->headers->value : NULL;
+ 
+ 	cj = cJSON_CreateObject();
+ 
++	/* DH: return minimal set of headers for some common messages that jambonz uses */
++	if (bsearch(&eventName, limitedEvents, limitedEventsCount, sizeof(char *), compare_strings) != NULL ||
++		strstr(eventName, "_transcribe::") != NULL ||
++		strstr(eventName, "::connect")) {
++		limitHeaders = 1;
++	}
++
+ 	for (hp = event->headers; hp; hp = hp->next) {
++		if (limitHeaders &&
++			bsearch(&hp->name, limitedHeaders, limitedHeadersCount, sizeof(char *), compare_strings) == NULL &&
++			0 != strncmp(hp->name, "variable_tts_", 13) &&
++			0 != strncmp(hp->name, "Application", 11) &&
++			0 != strncmp(hp->name, "transcription", 13)) {
++			continue;
++		}
+ 		if (hp->idx) {
+ 			cJSON *a = cJSON_CreateArray();
+ 			int i;

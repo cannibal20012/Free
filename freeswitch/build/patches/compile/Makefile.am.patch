@@ -1,0 +1,259 @@
+--- Makefile.am
++++ Makefile.am.new
+@@ -164,6 +164,18 @@
+ 
+ if HAVE_FVAD
+ CORE_CFLAGS += -DSWITCH_HAVE_FVAD $(LIBFVAD_CFLAGS)
++endif
++
++# DH: LWS
++if HAVE_LWS
++CORE_CFLAGS += -DSWITCH_HAVE_LWS $(LWS_CFLAGS)
++LWS_LIBS += -lwebsockets
++endif
++
++# DH: GRPC
++if HAVE_GRPC
++CORE_CFLAGS += -DSWITCH_HAVE_GRPC
++GRPC_LIBS += -lgrpc++_reflection -lprotobuf
+ endif
+ 
+ ##
+@@ -230,10 +242,213 @@
+ CORE_LIBS+=libfreeswitch_libyuv.la
+ endif
+ 
++if HAVE_GRPC
++GOOGLEAPIS_GENS_PATH = libs/googleapis/gens
++
++nodist_libfreeswitch_libgoogleapis_la_SOURCES = \
++libs/googleapis/gens/google/api/monitoring.grpc.pb.cc \
++libs/googleapis/gens/google/api/annotations.grpc.pb.cc \
++libs/googleapis/gens/google/api/http.pb.cc \
++libs/googleapis/gens/google/api/quota.pb.cc \
++libs/googleapis/gens/google/api/quota.grpc.pb.cc \
++libs/googleapis/gens/google/api/backend.grpc.pb.cc \
++libs/googleapis/gens/google/api/service.grpc.pb.cc \
++libs/googleapis/gens/google/api/monitored_resource.pb.cc \
++libs/googleapis/gens/google/api/consumer.pb.cc \
++libs/googleapis/gens/google/api/annotations.pb.cc \
++libs/googleapis/gens/google/api/metric.pb.cc \
++libs/googleapis/gens/google/api/logging.pb.cc \
++libs/googleapis/gens/google/api/auth.grpc.pb.cc \
++libs/googleapis/gens/google/api/distribution.grpc.pb.cc \
++libs/googleapis/gens/google/api/label.grpc.pb.cc \
++libs/googleapis/gens/google/api/launch_stage.grpc.pb.cc \
++libs/googleapis/gens/google/api/launch_stage.pb.cc \
++libs/googleapis/gens/google/api/httpbody.grpc.pb.cc \
++libs/googleapis/gens/google/api/config_change.grpc.pb.cc \
++libs/googleapis/gens/google/api/logging.grpc.pb.cc \
++libs/googleapis/gens/google/api/context.pb.cc \
++libs/googleapis/gens/google/api/system_parameter.pb.cc \
++libs/googleapis/gens/google/api/distribution.pb.cc \
++libs/googleapis/gens/google/api/control.pb.cc \
++libs/googleapis/gens/google/api/consumer.grpc.pb.cc \
++libs/googleapis/gens/google/api/label.pb.cc \
++libs/googleapis/gens/google/api/documentation.pb.cc \
++libs/googleapis/gens/google/api/log.pb.cc \
++libs/googleapis/gens/google/api/usage.grpc.pb.cc \
++libs/googleapis/gens/google/api/backend.pb.cc \
++libs/googleapis/gens/google/api/control.grpc.pb.cc \
++libs/googleapis/gens/google/api/log.grpc.pb.cc \
++libs/googleapis/gens/google/api/source_info.grpc.pb.cc \
++libs/googleapis/gens/google/api/billing.pb.cc \
++libs/googleapis/gens/google/api/auth.pb.cc \
++libs/googleapis/gens/google/api/resource.pb.cc \
++libs/googleapis/gens/google/api/servicecontrol/v1/service_controller.pb.cc \
++libs/googleapis/gens/google/api/servicecontrol/v1/check_error.pb.cc \
++libs/googleapis/gens/google/api/servicecontrol/v1/check_error.grpc.pb.cc \
++libs/googleapis/gens/google/api/servicecontrol/v1/distribution.grpc.pb.cc \
++libs/googleapis/gens/google/api/servicecontrol/v1/quota_controller.grpc.pb.cc \
++libs/googleapis/gens/google/api/servicecontrol/v1/metric_value.pb.cc \
++libs/googleapis/gens/google/api/servicecontrol/v1/distribution.pb.cc \
++libs/googleapis/gens/google/api/servicecontrol/v1/http_request.pb.cc \
++libs/googleapis/gens/google/api/servicecontrol/v1/log_entry.pb.cc \
++libs/googleapis/gens/google/api/servicecontrol/v1/service_controller.grpc.pb.cc \
++libs/googleapis/gens/google/api/servicecontrol/v1/metric_value.grpc.pb.cc \
++libs/googleapis/gens/google/api/servicecontrol/v1/log_entry.grpc.pb.cc \
++libs/googleapis/gens/google/api/servicecontrol/v1/operation.grpc.pb.cc \
++libs/googleapis/gens/google/api/servicecontrol/v1/quota_controller.pb.cc \
++libs/googleapis/gens/google/api/servicecontrol/v1/operation.pb.cc \
++libs/googleapis/gens/google/api/metric.grpc.pb.cc \
++libs/googleapis/gens/google/api/monitored_resource.grpc.pb.cc \
++libs/googleapis/gens/google/api/http.grpc.pb.cc \
++libs/googleapis/gens/google/api/httpbody.pb.cc \
++libs/googleapis/gens/google/api/endpoint.pb.cc \
++libs/googleapis/gens/google/api/documentation.grpc.pb.cc \
++libs/googleapis/gens/google/api/system_parameter.grpc.pb.cc \
++libs/googleapis/gens/google/api/endpoint.grpc.pb.cc \
++libs/googleapis/gens/google/api/service.pb.cc \
++libs/googleapis/gens/google/api/source_info.pb.cc \
++libs/googleapis/gens/google/api/servicemanagement/v1/resources.grpc.pb.cc \
++libs/googleapis/gens/google/api/servicemanagement/v1/servicemanager.pb.cc \
++libs/googleapis/gens/google/api/servicemanagement/v1/resources.pb.cc \
++libs/googleapis/gens/google/api/servicemanagement/v1/servicemanager.grpc.pb.cc \
++libs/googleapis/gens/google/api/billing.grpc.pb.cc \
++libs/googleapis/gens/google/api/policy.pb.cc \
++libs/googleapis/gens/google/api/usage.pb.cc \
++libs/googleapis/gens/google/api/config_change.pb.cc \
++libs/googleapis/gens/google/api/context.grpc.pb.cc \
++libs/googleapis/gens/google/api/monitoring.pb.cc \
++libs/googleapis/gens/google/api/field_behavior.pb.cc \
++libs/googleapis/gens/google/api/client.pb.cc \
++libs/googleapis/gens/google/rpc/error_details.grpc.pb.cc \
++libs/googleapis/gens/google/rpc/code.pb.cc \
++libs/googleapis/gens/google/rpc/status.pb.cc \
++libs/googleapis/gens/google/rpc/status.grpc.pb.cc \
++libs/googleapis/gens/google/rpc/error_details.pb.cc \
++libs/googleapis/gens/google/rpc/code.grpc.pb.cc \
++libs/googleapis/gens/google/longrunning/operations.grpc.pb.cc \
++libs/googleapis/gens/google/longrunning/operations.pb.cc \
++libs/googleapis/gens/google/cloud/speech/v1/cloud_speech.pb.cc \
++libs/googleapis/gens/google/cloud/speech/v1/cloud_speech.grpc.pb.cc \
++libs/googleapis/gens/google/cloud/speech/v1p1beta1/cloud_speech.pb.cc \
++libs/googleapis/gens/google/cloud/speech/v1p1beta1/cloud_speech.grpc.pb.cc \
++libs/googleapis/gens/google/cloud/speech/v2/cloud_speech.pb.cc \
++libs/googleapis/gens/google/cloud/speech/v2/cloud_speech.grpc.pb.cc \
++libs/googleapis/gens/google/cloud/speech/v1p1beta1/resource.pb.cc \
++libs/googleapis/gens/google/cloud/speech/v1p1beta1/resource.grpc.pb.cc \
++libs/googleapis/gens/google/cloud/speech/v1/resource.pb.cc \
++libs/googleapis/gens/google/cloud/speech/v1/resource.grpc.pb.cc \
++libs/googleapis/gens/google/cloud/texttospeech/v1/cloud_tts.pb.cc \
++libs/googleapis/gens/google/cloud/texttospeech/v1/cloud_tts.grpc.pb.cc \
++libs/googleapis/gens/google/logging/type/http_request.grpc.pb.cc  \
++libs/googleapis/gens/google/logging/type/log_severity.grpc.pb.cc \
++libs/googleapis/gens/google/logging/type/log_severity.pb.cc \
++libs/googleapis/gens/google/logging/type/http_request.pb.cc \
++libs/googleapis/gens/google/logging/v2/logging.pb.cc  \
++libs/googleapis/gens/google/logging/v2/logging_metrics.pb.cc \
++libs/googleapis/gens/google/logging/v2/logging.grpc.pb.cc \
++libs/googleapis/gens/google/logging/v2/log_entry.pb.cc \
++libs/googleapis/gens/google/logging/v2/logging_config.grpc.pb.cc \
++libs/googleapis/gens/google/logging/v2/logging_config.pb.cc \
++libs/googleapis/gens/google/logging/v2/log_entry.grpc.pb.cc \
++libs/googleapis/gens/google/logging/v2/logging_metrics.grpc.pb.cc \
++libs/googleapis/gens/google/type/date.grpc.pb.cc \
++libs/googleapis/gens/google/type/timeofday.pb.cc \
++libs/googleapis/gens/google/type/latlng.grpc.pb.cc \
++libs/googleapis/gens/google/type/money.pb.cc \
++libs/googleapis/gens/google/type/date.pb.cc \
++libs/googleapis/gens/google/type/postal_address.grpc.pb.cc \
++libs/googleapis/gens/google/type/dayofweek.grpc.pb.cc \
++libs/googleapis/gens/google/type/dayofweek.pb.cc \
++libs/googleapis/gens/google/type/timeofday.grpc.pb.cc \
++libs/googleapis/gens/google/type/color.pb.cc \
++libs/googleapis/gens/google/type/postal_address.pb.cc \
++libs/googleapis/gens/google/type/latlng.pb.cc \
++libs/googleapis/gens/google/type/color.grpc.pb.cc \
++libs/googleapis/gens/google/type/money.grpc.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/gcs.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/environment.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/fulfillment.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/validation_result.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/agent.grpc.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/agent.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/audio_config.grpc.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/audio_config.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/context.grpc.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/context.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/document.grpc.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/document.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/entity_type.grpc.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/entity_type.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/intent.grpc.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/intent.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/knowledge_base.grpc.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/knowledge_base.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/session_entity_type.grpc.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/session_entity_type.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/session.grpc.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/session.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/webhook.grpc.pb.cc \
++libs/googleapis/gens/google/cloud/dialogflow/v2beta1/webhook.pb.cc 
++
++libfreeswitch_libgoogleapis_la_CPPFLAGS = -I/usr/local/include -I$(GOOGLEAPIS_GENS_PATH) -std=c++17  -pthread
++
++# nuance asr 
++NUANCE_GENS_PATH = libs/nuance-asr-grpc-api/stubs/
++
++nodist_libfreeswitch_libnuanceapis_la_SOURCES = \
++libs/nuance-asr-grpc-api/stubs/nuance/rpc/error_details.pb.cc \
++libs/nuance-asr-grpc-api/stubs/nuance/rpc/status_code.pb.cc \
++libs/nuance-asr-grpc-api/stubs/nuance/rpc/status.pb.cc \
++libs/nuance-asr-grpc-api/stubs/nuance/rpc/error_details.grpc.pb.cc \
++libs/nuance-asr-grpc-api/stubs/nuance/rpc/status_code.grpc.pb.cc \
++libs/nuance-asr-grpc-api/stubs/nuance/rpc/status.grpc.pb.cc \
++libs/nuance-asr-grpc-api/stubs/nuance/asr/v1/result.pb.cc \
++libs/nuance-asr-grpc-api/stubs/nuance/asr/v1/resource.pb.cc \
++libs/nuance-asr-grpc-api/stubs/nuance/asr/v1/recognizer.pb.cc \
++libs/nuance-asr-grpc-api/stubs/nuance/asr/v1/result.grpc.pb.cc \
++libs/nuance-asr-grpc-api/stubs/nuance/asr/v1/resource.grpc.pb.cc \
++libs/nuance-asr-grpc-api/stubs/nuance/asr/v1/recognizer.grpc.pb.cc 
++
++libfreeswitch_libnuanceapis_la_CPPFLAGS = -I/usr/local/include -I$(NUANCE_GENS_PATH) -std=c++17  -pthread
++
++#nvidia asr
++NVIDIA_GENS_PATH = libs/riva-asr-grpc-api/stubs/
++
++nodist_libfreeswitch_libnvidiaapis_la_SOURCES = \
++libs/riva-asr-grpc-api/stubs/riva/proto/riva_asr.pb.cc \
++libs/riva-asr-grpc-api/stubs/riva/proto/riva_audio.pb.cc \
++libs/riva-asr-grpc-api/stubs/riva/proto/riva_asr.grpc.pb.cc \
++libs/riva-asr-grpc-api/stubs/riva/proto/riva_audio.grpc.pb.cc 
++
++libfreeswitch_libnvidiaapis_la_CPPFLAGS = -I/usr/local/include -I$(NVIDIA_GENS_PATH) -std=c++17  -pthread
++
++#soniox asr
++SONIOX_GENS_PATH = libs/soniox-asr-grpc-api/stubs/
++
++nodist_libfreeswitch_libsonioxapis_la_SOURCES = \
++libs/soniox-asr-grpc-api/stubs/soniox/speech_service.pb.cc \
++libs/soniox-asr-grpc-api/stubs/soniox/speech_service.grpc.pb.cc
++
++libfreeswitch_libsonioxapis_la_CPPFLAGS = -I/usr/local/include -I$(SONIOX_GENS_PATH) -std=c++17  -pthread
++
++#cobalt asr
++COBALT_GENS_PATH = libs/cobalt-asr-grpc-api/stubs/
++
++nodist_libfreeswitch_libcobaltapis_la_SOURCES = \
++libs/cobalt-asr-grpc-api/stubs/cobaltspeech/transcribe/v5/transcribe.pb.cc \
++libs/cobalt-asr-grpc-api/stubs/cobaltspeech/transcribe/v5/transcribe.grpc.pb.cc
++
++libfreeswitch_libcobaltapis_la_CPPFLAGS = -I/usr/local/include -I$(COBALT_GENS_PATH) -I./libs/googleapis/gens -std=c++17  -pthread
++
++CORE_LIBS+=libfreeswitch_libgoogleapis.la libfreeswitch_libnuanceapis.la libfreeswitch_libnvidiaapis.la libfreeswitch_libsonioxapis.la libfreeswitch_libcobaltapis.la
++noinst_LTLIBRARIES += libfreeswitch_libgoogleapis.la libfreeswitch_libnuanceapis.la libfreeswitch_libnvidiaapis.la libfreeswitch_libsonioxapis.la libfreeswitch_libcobaltapis.la
++
++endif
++
+ lib_LTLIBRARIES	         = libfreeswitch.la
+ libfreeswitch_la_CFLAGS  = $(CORE_CFLAGS) $(SQLITE_CFLAGS) $(GUMBO_CFLAGS) $(FVAD_CFLAGS) $(FREETYPE_CFLAGS) $(CURL_CFLAGS) $(PCRE_CFLAGS) $(SPEEX_CFLAGS) $(LIBEDIT_CFLAGS) $(openssl_CFLAGS) $(SOFIA_SIP_CFLAGS) $(AM_CFLAGS) $(TPL_CFLAGS)
+-libfreeswitch_la_LDFLAGS = -version-info 1:0:0 $(AM_LDFLAGS) $(PLATFORM_CORE_LDFLAGS) -no-undefined
+-libfreeswitch_la_LIBADD  = $(CORE_LIBS) $(APR_LIBS) $(SQLITE_LIBS) $(GUMBO_LIBS) $(FVAD_LIBS) $(FREETYPE_LIBS) $(CURL_LIBS) $(PCRE_LIBS) $(SPEEX_LIBS) $(LIBEDIT_LIBS) $(SYSTEMD_LIBS) $(openssl_LIBS) $(PLATFORM_CORE_LIBS) $(TPL_LIBS) $(SPANDSP_LIBS) $(SOFIA_SIP_LIBS)
++libfreeswitch_la_LDFLAGS = -version-info 1:0:0 $(AM_LDFLAGS) $(PLATFORM_CORE_LDFLAGS) $(AWS_LDFLAGS) -no-undefined
++libfreeswitch_la_LIBADD  = $(CORE_LIBS) $(APR_LIBS) $(SQLITE_LIBS) $(GUMBO_LIBS) $(FVAD_LIBS) $(FREETYPE_LIBS) $(CURL_LIBS) $(PCRE_LIBS) $(SPEEX_LIBS) $(LIBEDIT_LIBS) $(SYSTEMD_LIBS) $(GRPC_LIBS) $(AWS_SDK_LIBS) $(openssl_LIBS) $(PLATFORM_CORE_LIBS) $(TPL_LIBS) $(SPANDSP_LIBS) $(SOFIA_SIP_LIBS)
+ libfreeswitch_la_DEPENDENCIES = $(BUILT_SOURCES)
+ 
+ if HAVE_PNG
+@@ -304,6 +519,10 @@
+ 	src/include/switch_odbc.h \
+ 	src/include/switch_hashtable.h \
+ 	src/include/switch_image.h
++
++#if HAVE_AWS_SDK
++#  library_include_HEADERS += src/include/aws_wrapper.h
++#endif
+ 
+ nodist_libfreeswitch_la_SOURCES = \
+ 	src/include/switch_frame.h \
+@@ -400,6 +619,10 @@
+ libfreeswitch_la_SOURCES += src/switch_cpp.cpp
+ endif
+ 
++#if HAVE_AWS_SDK
++#  libfreeswitch_la_SOURCES += src/aws_wrapper.cpp
++#endif
++
+ $(libfreeswitch_la_SOURCES): $(CORE_LIBS) $(switch_builddir)/modules.conf  
+ 
+ src/include/switch_swigable_cpp.h: $(switch_srcdir)/src/include/switch_cpp.h

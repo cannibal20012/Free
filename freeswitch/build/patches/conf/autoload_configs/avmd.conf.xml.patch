@@ -1,0 +1,20 @@
+--- avmd.conf.xml
++++ avmd.conf.xml.new
+@@ -54,10 +54,10 @@
+             <param name="simplified_estimation" value="1"/>
+ 
+             <!-- define/undefine to enable/disable avmd on internal channel -->
+-            <param name="inbound_channel" value="0"/>
++            <param name="inbound_channel" value="1"/>
+ 
+             <!-- define/undefine to enable/disable avmd on external channel -->
+-            <param name="outbound_channel" value="1"/>
++            <param name="outbound_channel" value="0"/>
+ 
+             <!-- determines the mode of detection, default is both amplitude and frequency -->
+             <param name="detection_mode" value="2"/>
+@@ -71,4 +71,3 @@
+         <!-- Per call settings end -->
+     </settings>
+ </configuration>
+-

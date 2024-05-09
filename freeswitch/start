@@ -1,0 +1,39 @@
+#!/bin/bash
+pushd . >/dev/null
+SCRIPT_PATH="${BASH_SOURCE[0]}"
+while ([ -h "${SCRIPT_PATH}" ]); do
+  cd "$(dirname "${SCRIPT_PATH}")"
+  SCRIPT_PATH="$(readlink "$(basename "${SCRIPT_PATH}")")"
+done
+cd "$(dirname "${SCRIPT_PATH}")" >/dev/null
+SCRIPT_PATH="$(pwd)"
+popd >/dev/null
+
+set -e
+
+PRUNE=0
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+  -p | --prune)
+    PRUNE=1
+    shift
+    ;;
+  *) ;;
+  esac
+done
+
+if [[ $PRUNE -eq 1 ]]; then
+  . $SCRIPT_PATH/stop --prune
+else
+  . $SCRIPT_PATH/stop
+fi
+
+docker run \
+  -d --rm --net=host \
+  -v $SCRIPT_PATH/conf:/usr/local/freeswitch/conf \
+  -v $SCRIPT_PATH/log:/usr/local/freeswitch/log \
+  -v $SCRIPT_PATH/sounds:/usr/local/freeswitch/sounds \
+  -v $SCRIPT_PATH/recordings:/usr/local/freeswitch/recordings \
+  --name freeswitch \
+  servicebots/freeswitch \
+  freeswitch

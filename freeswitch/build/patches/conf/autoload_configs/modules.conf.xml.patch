@@ -1,0 +1,164 @@
+--- modules.conf.xml
++++ modules.conf.xml.new
+@@ -6,7 +6,7 @@
+     <load module="mod_logfile"/>
+     <!-- <load module="mod_syslog"/> -->
+ 
+-    <!--<load module="mod_yaml"/>-->
++    <!-- <load module="mod_yaml"/> -->
+ 
+     <!-- Multi-Faceted -->
+     <!-- mod_enum is a dialplan interface, an application interface and an api command interface -->
+@@ -15,7 +15,7 @@
+     <!-- XML Interfaces -->
+     <!-- <load module="mod_xml_rpc"/> -->
+     <!-- <load module="mod_xml_curl"/> -->
+-    <!-- <load module="mod_xml_cdr"/> -->
++    <load module="mod_xml_cdr"/>
+     <!-- <load module="mod_xml_radius"/> -->
+     <!-- <load module="mod_xml_scgi"/> -->
+ 
+@@ -27,7 +27,7 @@
+     <load module="mod_event_socket"/>
+     <!-- <load module="mod_event_zmq"/> -->
+     <!-- <load module="mod_zeroconf"/> -->
+-    <!-- <load module="mod_erlang_event"/> -->
++    <load module="mod_erlang_event"/>
+     <!-- <load module="mod_smpp"/> -->
+     <!-- <load module="mod_snmp"/> -->
+ 
+@@ -50,25 +50,26 @@
+     <load module="mod_verto"/>
+ 
+     <!-- Applications -->
+-    <load module="mod_signalwire"/>
++    <!-- <load module="mod_signalwire"/> -->
++    <load module="mod_avmd"/>
+     <load module="mod_commands"/>
+     <load module="mod_conference"/>
+     <!-- <load module="mod_curl"/> -->
+     <load module="mod_db"/>
+     <load module="mod_dptools"/>
+-    <load module="mod_expr"/>
+-    <load module="mod_fifo"/>
+-    <load module="mod_hash"/>
++    <!-- <load module="mod_expr"/> -->
++    <!-- <load module="mod_fifo"/> -->
++    <!-- <load module="mod_hash"/> -->
+     <!--<load module="mod_mongo"/> -->
+     <load module="mod_voicemail"/>
+-    <!--<load module="mod_directory"/>-->
+-    <!--<load module="mod_distributor"/>-->
++    <load module="mod_directory"/>
++    <load module="mod_distributor"/>
+     <!--<load module="mod_lcr"/>-->
+     <!--<load module="mod_easyroute"/>-->
+-    <load module="mod_esf"/>
+-    <load module="mod_fsv"/>
++    <!-- <load module="mod_esf"/> -->
++    <!-- <load module="mod_fsv"/> -->
+     <!--<load module="mod_cluechoo"/>-->
+-    <load module="mod_valet_parking"/>
++    <!-- <load module="mod_valet_parking"/> -->
+     <!--<load module="mod_fsk"/>-->
+     <!--<load module="mod_spy"/>-->
+     <!--<load module="mod_sms"/>-->
+@@ -77,6 +78,29 @@
+     <!--<load module="mod_random"/>-->
+     <load module="mod_httapi"/>
+     <!--<load module="mod_translate"/>-->
++
++    <!-- 3rd Party Applications -->
++    <load module="mod_audio_fork"/>
++    <!-- <load module="mod_assemblyai_transcribe"/> -->
++    <!-- <load module="mod_aws_lex"/> -->
++    <!-- <load module="mod_aws_transcribe"/> -->
++    <!-- <load module="mod_azure_transcribe"/> -->
++    <!-- <load module="mod_azure_tts"/> -->
++    <!-- <load module="mod_cobalt_transcribe"/> -->
++    <load module="mod_deepgram_transcribe"/>
++    <load module="mod_deepgram_tts"/>
++    <!-- <load module="mod_dub"/> -->
++    <load module="mod_elevenlabs_tts"/>
++    <!-- <load module="mod_whisper_tts"/> -->
++    <!-- <load module="mod_google_transcribe"/> -->
++    <!-- <load module="mod_ibm_transcribe"/> -->
++    <!-- <load module="mod_nuance_transcribe"/> -->
++    <!-- <load module="mod_nvidia_transcribe"/> -->
++    <!-- <load module="mod_playht_tts"/> -->
++    <!-- <load module="mod_rimelabs_tts"/> -->
++    <!-- <load module="mod_soniox_transcribe"/> -->
++    <!-- <load module="mod_jambonz_transcribe"/> -->
++    <!-- <load module="mod_dialogflow"/> -->
+ 
+     <!-- SNOM Module -->
+     <!--<load module="mod_snom"/>-->
+@@ -87,7 +111,7 @@
+     <!-- Dialplan Interfaces -->
+     <!-- <load module="mod_dialplan_directory"/> -->
+     <load module="mod_dialplan_xml"/>
+-    <load module="mod_dialplan_asterisk"/>
++    <!-- <load module="mod_dialplan_asterisk"/> -->
+ 
+     <!-- Codec Interfaces -->
+     <load module="mod_spandsp"/>
+@@ -95,34 +119,34 @@
+     <load module="mod_g729"/>
+     <load module="mod_amr"/>
+     <!--<load module="mod_ilbc"/>-->
+-    <!--<load module="mod_h26x"/>-->
+-    <load module="mod_b64"/>
++    <load module="mod_h26x"/>
++    <!-- <load module="mod_b64"/> -->
+     <!--<load module="mod_siren"/>-->
+     <!--<load module="mod_isac"/>-->
+     <load module="mod_opus"/>
+ 
+     <!-- File Format Interfaces -->
+-    <load module="mod_av"/>
++    <!-- <load module="mod_av"/> -->
+     <load module="mod_sndfile"/>
+     <load module="mod_native_file"/>
+-    <!--<load module="mod_opusfile"/>-->
+-    <load module="mod_png"/>
++    <!-- <load module="mod_opusfile"/> -->
++    <!-- <load module="mod_png"/> -->
+     <!-- <load module="mod_shell_stream"/> -->
+     <!--For icecast/mp3 streams/files-->
+-    <!--<load module="mod_shout"/>-->
++    <load module="mod_shout"/>
+     <!--For local streams (play all the files in a directory)-->
+     <load module="mod_local_stream"/>
+     <load module="mod_tone_stream"/>
+ 
+     <!-- Timers -->
+-    <!-- <load module="mod_timerfd"/> -->
++    <load module="mod_timerfd"/>
+     <!-- <load module="mod_posix_timer"/> -->
+ 
+     <!-- Languages -->
+-    <!-- <load module="mod_v8"/> -->
++    <load module="mod_v8"/>
+     <!-- <load module="mod_perl"/> -->
+     <!-- <load module="mod_python"/> -->
+-    <!-- <load module="mod_python3"/> -->
++    <load module="mod_python3"/>
+     <!-- <load module="mod_java"/> -->
+     <load module="mod_lua"/>
+ 
+@@ -135,6 +159,8 @@
+ 
+     <!-- Say -->
+     <load module="mod_say_en"/>
++    <load module="mod_say_es"/>
++    <load module="mod_say_es_ar"/>
+     <!-- <load module="mod_say_ru"/> -->
+     <!-- <load module="mod_say_zh"/> -->
+     <!-- <load module="mod_say_sv"/> -->
+@@ -142,6 +168,5 @@
+     <!-- Third party modules -->
+     <!--<load module="mod_nibblebill"/>-->
+     <!--<load module="mod_callcenter"/>-->
+-
+   </modules>
+ </configuration>

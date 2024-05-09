@@ -1,0 +1,9 @@
+<include>
+  <extension name="elixir">
+    <condition field="destination_number" expression="^9999\d$">
+      <action application="answer"/>
+      <action application="erlang" data="Elixir.CallApiCalls.FreeSwitch.ConnectionsSupervisor:add_worker call_api"/>
+      <action application="echo"/>
+    </condition>
+  </extension>
+</include>

@@ -1,0 +1,43 @@
+#!/bin/bash
+pushd . >/dev/null
+SCRIPT_PATH="${BASH_SOURCE[0]}"
+while ([ -h "${SCRIPT_PATH}" ]); do
+  cd "$(dirname "${SCRIPT_PATH}")"
+  SCRIPT_PATH="$(readlink "$(basename "${SCRIPT_PATH}")")"
+done
+cd "$(dirname "${SCRIPT_PATH}")" >/dev/null
+SCRIPT_PATH="$(pwd)"
+popd >/dev/null
+
+set -e
+
+PRUNE=0
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+  -p | --prune)
+    PRUNE=1
+    shift
+    ;;
+  *) ;;
+  esac
+done
+
+docker stop -t 0 freeswitch 2>/dev/null || true
+
+if [[ $PRUNE -eq 1 ]]; then
+  if [[ -e "${SCRIPT_PATH}/conf" ]]; then
+    rm -fr "${SCRIPT_PATH}/conf"
+  fi
+
+  if [[ -e "${SCRIPT_PATH}/log" ]]; then
+    rm -fr "${SCRIPT_PATH}/log"
+  fi
+
+  if [[ -e "${SCRIPT_PATH}/sounds" ]]; then
+    rm -fr "${SCRIPT_PATH}/sounds"
+  fi
+
+  if [[ -e "${SCRIPT_PATH}/recordings" ]]; then
+    rm -fr "${SCRIPT_PATH}/recordings"
+  fi
+fi

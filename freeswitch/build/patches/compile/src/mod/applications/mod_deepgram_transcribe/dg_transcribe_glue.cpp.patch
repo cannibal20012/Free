@@ -1,0 +1,13 @@
+--- dg_transcribe_glue.cpp
++++ dg_transcribe_glue.cpp.new
+@@ -266,8 +266,8 @@
+     if (interim) {
+      oss <<  "&interim_results=true";
+     }
+-    if (var = switch_channel_get_variable(channel, "DEEPGRAM_SPEECH_VAD_TURNOFF")) {
+-      oss <<  "&vad_turnoff=";
++    if (var = switch_channel_get_variable(channel, "DEEPGRAM_SPEECH_VAD_EVENTS")) {
++      oss <<  "&vad_events=";
+       oss <<  var;
+     }
+    oss <<  "&encoding=linear16";

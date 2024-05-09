@@ -1,0 +1,13 @@
+--- vars.xml
++++ vars.xml.new
+@@ -249,8 +249,8 @@
+        127 - BV32
+ 
+   -->
+-  <X-PRE-PROCESS cmd="set" data="global_codec_prefs=OPUS,G722,PCMU,PCMA,H264,VP8"/>
+-  <X-PRE-PROCESS cmd="set" data="outbound_codec_prefs=OPUS,G722,PCMU,PCMA,H264,VP8"/>
++  <X-PRE-PROCESS cmd="set" data="global_codec_prefs=PCMU,PCMA,OPUS,G722"/>
++  <X-PRE-PROCESS cmd="set" data="outbound_codec_prefs=PCMU,PCMA,OPUS,G722"/>
+ 
+   <!--
+       xmpp_client_profile and xmpp_server_profile

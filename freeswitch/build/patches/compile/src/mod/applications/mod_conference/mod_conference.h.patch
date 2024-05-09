@@ -1,0 +1,21 @@
+--- mod_conference.h
++++ mod_conference.h.new
+@@ -908,6 +908,9 @@
+ 	mcu_layer_cam_opts_t cam_opts;
+ 	switch_core_video_filter_t video_filters;
+ 	int video_manual_border;
++
++  /* DCH: api for member-level tag values */
++  char* tag;
+ };
+ 
+ typedef enum {
+@@ -1184,6 +1187,8 @@
+ switch_status_t conference_api_sub_canvas_auto_clear(conference_obj_t *conference, switch_stream_handle_t *stream, int argc, char **argv);
+ switch_status_t conference_api_sub_mute(conference_member_t *member, switch_stream_handle_t *stream, void *data);
+ switch_status_t conference_api_sub_tmute(conference_member_t *member, switch_stream_handle_t *stream, void *data);
++switch_status_t conference_api_sub_tag(conference_member_t *member, switch_stream_handle_t *stream, void *data);
++switch_status_t conference_api_sub_gettag(conference_obj_t *conference, switch_stream_handle_t *stream, int argc, char **argv);
+ switch_status_t conference_api_sub_unmute(conference_member_t *member, switch_stream_handle_t *stream, void *data);
+ switch_status_t conference_api_sub_vmute(conference_member_t *member, switch_stream_handle_t *stream, void *data);
+ switch_status_t conference_api_sub_tvmute(conference_member_t *member, switch_stream_handle_t *stream, void *data);
